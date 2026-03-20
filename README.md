@@ -1,51 +1,55 @@
-# Implementation of Univariate Linear Regression
+# Algorithm for QR Decomposition
 ## Aim:
-To implement univariate Linear Regression to fit a straight line using least squares.
+To implement QR decomposition algorithm using the Gram-Schmidt method.
 ## Equipment’s required:
 1.	Hardware – PCs
 2.	Anaconda – Python 3.7 Installation / Moodle-Code Runner
 ## Algorithm:
-1.	Get the independent variable X and dependent variable Y.
-2.	Calculate the mean of the X -values and the mean of the Y -values.
-3.	Find the slope m of the line of best fit using the formula.
- ![eqn1](./eq1.jpg)
-4.	Compute the y -intercept of the line by using the formula:
-![eqn2](./eq2.jpg)  
-5.	Use the slope m and the y -intercept to form the equation of the line.
-6.	Obtain the straight line equation Y=mX+b and plot the scatterplot.
-## Program
-```
-Program to develop to implement univariate Linear Regression to fit a straight line using least squares.
+1.	Intialize the matrix Q and u
+2.	The vector u and e is given by
 
-Developed by : Dhivakar B
-Register no : 212225040075
+    ![eqn1](./ex4.jpg)
+
+    ![eqn2](./ex6.jpg)
+
+    ![eqn3](./ex3.jpg)
+
+3.	Obtain the Q matrix   
+    ![eqn4](./ex1.jpg)
+4.	Construct the upper triangular matrix R
+    ![eqn5](./ex2.jpg)
+
+
+
+## Program:
+### Gram-Schmidt Method
+```
 import numpy as np
-import matplotlib.pyplot as plt
-X= np.array([0,1,2,3,4,5,6,7,8,9])
-Y= np.array([1,3,2,5,7,8,8,9,10,12])
-plt.scatter(X,Y)
-plt.show()
-X_Mean=np.mean(X)
-Y_Mean=np.mean(Y)
-num=0
-den=0
-for i in range(len(X)):
-    num+=(X[i]-X_Mean)*(Y[i]-Y_Mean)
-    den+=(X[i]-X_Mean)**2
-
-m=num/den
-b=Y_Mean-(m*X_Mean)
-print(f"Slope : {m}\nIntercept : {b}")
-Y_Pred=(m*X)+b
-print(f"Predicted values are : \n{Y_Pred}")
-plt.scatter(X,Y,color='Red')
-plt.plot(X,Y_Pred,color='Blue')
-plt.show()
+def qr_decomposition(A):
+    A=np.array(A,dtype=float)
+    m,n=A.shape
+    Q=np.zeros((m,n))
+    R=np.zeros((n,n))
+    for j in range(n):
+        v=A[:,j]
+        for i in range(j):
+            R[i,j]=np.dot(Q[:,i],A[:,j])
+            v=v-R[i,j]*Q[:,i]
+        R[j,j]=np.linalg.norm(v)
+        Q[:,j]=v/R[j,j]
+    return Q,R
+A=np.array(eval(input()))
+Q,R=qr_decomposition(A)
+print("The Q Matrix is")
+print("",Q)
+print("The R Matrix is")
+print("",R)
 ```
+
 ## Output
-<img width="1035" height="535" alt="Screenshot 2026-03-10 183646" src="https://github.com/user-attachments/assets/251a2452-8336-4ff7-b254-fa80b59e68f4" />
-<img width="1043" height="820" alt="Screenshot 2026-03-10 183750" src="https://github.com/user-attachments/assets/7ec88f68-8d0b-47f9-8d5f-e21115025991" />
+<img width="1239" height="499" alt="Screenshot 2026-02-12 141214" src="https://github.com/user-attachments/assets/cf915a89-00ed-43a4-b786-06c5b5aab175" />
+
 
 
 ## Result
-Thus the univariate Linear Regression was implemented to fit a straight line using least squares.
+Thus the QR decomposition algorithm using the Gram-Schmidt process is written and verified the result.
